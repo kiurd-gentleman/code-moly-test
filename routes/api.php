@@ -42,6 +42,6 @@ Route::middleware('auth:api')->group(function () {
     Route::get('quizzes/{quizId}/questions', [QuestionController::class, 'index']);
     Route::delete('questions/{id}', [QuestionController::class, 'destroy']);
 
-    Route::post('quizzes/{quizId}/results', [ResultController::class, 'store']);
+    Route::post('quizzes/{quizId}/submit', [ResultController::class, 'store']);
     Route::get('results', [ResultController::class, 'index']);
 });

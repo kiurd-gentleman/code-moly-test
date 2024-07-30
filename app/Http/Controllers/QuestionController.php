@@ -42,7 +42,7 @@ class QuestionController extends Controller
             }
 
             DB::commit();
-            return response()->json($question, 201);
+            return response()->json($question->load('options'), 201);
         }catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['message' => $e->getMessage()], 500);

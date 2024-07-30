@@ -14,15 +14,16 @@ class ResultController extends Controller
             'answers' => 'required|array',
         ]);
 
-        $quiz = Quiz::with('questions')->findOrFail($quizId);
+        $quiz = Quiz::findOrFail($quizId);
         $score = 0;
         $totalScore = 0;
 
         foreach ($quiz->questions as $question) {
             $totalScore += $question->score;
-            if (isset($request->answers[$question->id]) && $request->answers[$question->id] == $question->correct_answer) {
+            $answer = collect($request->answers)->firstWhere('question', $question->id);
+            if ($answer && ($answer['answer'] == $question->options->where('is_correct', true)->first()->id)) {
                 $score += $question->score;
-            } else {
+            } elseif ($answer && $answer['answer'] != $question->options->where('is_correct', true)->first()->option) {
                 $score -= $question->negative_mark;
             }
         }
