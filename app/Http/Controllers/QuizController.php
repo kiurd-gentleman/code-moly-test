@@ -32,4 +32,20 @@ class QuizController extends Controller
     {
         return Quiz::with('questions')->findOrFail($id);
     }
+
+    public function update(Request $request, $id)
+    {
+        $this->validate($request, [
+            'title' => 'required|string|max:255',
+            'subject_id' => 'required|integer',
+        ]);
+
+        $quiz = Quiz::findOrFail($id);
+        $quiz->update([
+            'title' => $request->title,
+            'subject_id' => $request->subject_id,
+        ]);
+
+        return response()->json($quiz, 200);
+    }
 }
