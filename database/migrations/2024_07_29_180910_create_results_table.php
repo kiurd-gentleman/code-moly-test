@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('quiz_id')->constrained();
             $table->integer('score');
             $table->integer('total_score');
+            $table->integer('negative_score')->default(0);
             $table->timestamps();
         });
     }

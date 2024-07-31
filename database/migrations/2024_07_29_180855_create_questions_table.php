@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('quiz_id');
             $table->text('question_text');
-            $table->string('correct_answer');
+//            $table->string('correct_answer');
             $table->integer('score');
             $table->integer('negative_mark');
             $table->timestamps();

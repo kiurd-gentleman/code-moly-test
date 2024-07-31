@@ -17,9 +17,11 @@ class QuestionController extends Controller
     {
         $this->validate($request, [
             'question_text' => 'required|string',
-            'correct_answer' => 'required|integer',
+//            'correct_answer' => 'required|integer',
             'options' => 'required|array',
-            'score' => 'required|integer',
+            'options.*.text' => 'required|string',
+            'options.*.is_correct' => 'required|boolean',
+            'score' => 'required|integer|gt:0',
             'negative_mark' => 'nullable|integer|lt:score',
         ]);
 
@@ -28,7 +30,7 @@ class QuestionController extends Controller
             $question = Question::create([
                 'quiz_id' => $quizId,
                 'question_text' => $request->question_text,
-                'correct_answer' => $request->correct_answer,
+//                'correct_answer' => $request->correct_answer,
                 'score' => $request->score,
                 'negative_mark' => $request->negative_mark ?? 0,
             ]);

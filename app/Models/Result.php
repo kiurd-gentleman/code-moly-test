@@ -14,6 +14,7 @@ class Result extends Model
         'user_id',
         'score',
         'total_score',
+        'negative_score'
     ];
 
     public function user()

@@ -17,14 +17,21 @@ class ResultController extends Controller
         $quiz = Quiz::findOrFail($quizId);
         $score = 0;
         $totalScore = 0;
+        $negativeScore = 0;
+
+        //calculate negative mark
+
+
 
         foreach ($quiz->questions as $question) {
             $totalScore += $question->score;
             $answer = collect($request->answers)->firstWhere('question', $question->id);
-            if ($answer && ($answer['answer'] == $question->options->where('is_correct', true)->first()->id)) {
+//            return $question->options->where('is_correct', true)->first()?->id;
+            if ($answer && ($answer['answer'] == ($question->options->where('is_correct', true)->first())?->id ?? null)) {
                 $score += $question->score;
-            } elseif ($answer && $answer['answer'] != $question->options->where('is_correct', true)->first()->option) {
+            } elseif ($answer && $answer['answer'] != ($question->options->where('is_correct', true)->first())?->id ?? null) {
                 $score -= $question->negative_mark;
+                $negativeScore += $question->negative_mark;
             }
         }
 
@@ -33,6 +40,7 @@ class ResultController extends Controller
             'quiz_id' => $quizId,
             'score' => $score,
             'total_score' => $totalScore,
+            'negative_score' => $negativeScore,
         ]);
 
         return response()->json($result, 201);
